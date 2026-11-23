@@ -4,22 +4,17 @@ import (
 	"net/http"
 	"testing"
 
-	base "api-tests-template/tests"
-	"api-tests-template/tests/fixtures"
-	"api-tests-template/tests/internal/manager"
+	"api-tests-template/internal/managers/favorites"
 )
 
 func TestFavoritesRejectDuplicateAdvertisement(t *testing.T) {
 	// Arrange
-	base.SetupSuite()
-	owner := fixtures.LoginOwner(t)
-	buyer := fixtures.LoginBuyer(t, owner)
-	ad := fixtures.CreateAdvertisement(t, owner.Token)
-	addFavoriteForSetup(t, buyer.Token, ad.ID)
+	buyerToken, ad := setupFavoriteAdvertisement(t)
+	addFavoriteForSetup(t, buyerToken, ad.ID)
 
 	// Act
 	t.Logf("Шаг: повторно добавляем объявление %s", ad.ID)
-	result := manager.AddFavorite(t, buyer.Token, ad.ID)
+	result := favorites.AddFavorite(t, buyerToken, ad.ID)
 
 	// Assert
 	result.RequireError(t, http.StatusConflict, "(?i)already|duplicate")

@@ -1,4 +1,4 @@
-package client
+package httpclient
 
 import (
 	"sync"
@@ -16,7 +16,8 @@ var (
 	nextRequestAt time.Time
 )
 
-func newRequest(token string) *apitest.APITest {
+// NewRequest создаёт API-запрос с общей паузой между запросами в тестовом процессе.
+func NewRequest(token string) *apitest.APITest {
 	requestMu.Lock()
 	defer requestMu.Unlock()
 	if delay := time.Until(nextRequestAt); delay > 0 {

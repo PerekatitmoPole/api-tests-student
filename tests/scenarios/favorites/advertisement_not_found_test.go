@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"testing"
 
+	"api-tests-template/internal/assertions"
+	"api-tests-template/internal/managers/favorites"
 	base "api-tests-template/tests"
 	"api-tests-template/tests/fixtures"
-	"api-tests-template/tests/internal/manager"
 )
 
 func TestFavoritesRejectUnknownAdvertisement(t *testing.T) {
@@ -16,10 +17,10 @@ func TestFavoritesRejectUnknownAdvertisement(t *testing.T) {
 
 	cases := []struct {
 		name    string
-		request func(*testing.T, string, string) manager.Result
+		request func(*testing.T, string, string) assertions.Result
 	}{
-		{name: "add", request: manager.AddFavorite},
-		{name: "delete", request: manager.DeleteFavorite},
+		{name: "add", request: favorites.AddFavorite},
+		{name: "delete", request: favorites.DeleteFavorite},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {

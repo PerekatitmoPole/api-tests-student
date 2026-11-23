@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
+	"api-tests-template/internal/managers/favorites"
 	base "api-tests-template/tests"
 	"api-tests-template/tests/fixtures"
-	"api-tests-template/tests/internal/manager"
 )
 
 func TestFavoritesRejectOwnAdvertisement(t *testing.T) {
@@ -18,7 +18,7 @@ func TestFavoritesRejectOwnAdvertisement(t *testing.T) {
 
 	// Act
 	t.Logf("Шаг: владелец добавляет своё объявление %s в избранное", ad.ID)
-	result := manager.AddFavorite(t, owner.Token, ad.ID)
+	result := favorites.AddFavorite(t, owner.Token, ad.ID)
 
 	// Assert
 	result.RequireError(t, http.StatusForbidden, `(?i)\bown\b|owner|belongs`)

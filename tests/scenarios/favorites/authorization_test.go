@@ -3,9 +3,9 @@ package favorites
 import (
 	"testing"
 
+	"api-tests-template/internal/managers/favorites"
 	base "api-tests-template/tests"
 	"api-tests-template/tests/fixtures"
-	"api-tests-template/tests/internal/manager"
 )
 
 func TestFavoritesRequireAuthorization(t *testing.T) {
@@ -18,7 +18,7 @@ func TestFavoritesRequireAuthorization(t *testing.T) {
 			t.Run("list", func(t *testing.T) {
 				// Act
 				t.Log("Шаг: отправляем GET /favorites")
-				result := manager.GetFavorites(t, tc.Token)
+				result := favorites.GetFavorites(t, tc.Token)
 
 				// Assert
 				result.RequireUnauthorized(t, tc.Token)
@@ -26,7 +26,7 @@ func TestFavoritesRequireAuthorization(t *testing.T) {
 			t.Run("add", func(t *testing.T) {
 				// Act
 				t.Log("Шаг: отправляем POST /favorites")
-				result := manager.AddFavorite(t, tc.Token, id)
+				result := favorites.AddFavorite(t, tc.Token, id)
 
 				// Assert
 				result.RequireUnauthorized(t, tc.Token)
@@ -34,7 +34,7 @@ func TestFavoritesRequireAuthorization(t *testing.T) {
 			t.Run("delete", func(t *testing.T) {
 				// Act
 				t.Log("Шаг: отправляем DELETE /favorites/{ad_id}")
-				result := manager.DeleteFavorite(t, tc.Token, id)
+				result := favorites.DeleteFavorite(t, tc.Token, id)
 
 				// Assert
 				result.RequireUnauthorized(t, tc.Token)
@@ -42,7 +42,7 @@ func TestFavoritesRequireAuthorization(t *testing.T) {
 			t.Run("bulk", func(t *testing.T) {
 				// Act
 				t.Log("Шаг: отправляем POST /favorites/bulk")
-				result := manager.AddFavoritesBulk(t, tc.Token, []string{id})
+				result := favorites.AddFavoritesBulk(t, tc.Token, []string{id})
 
 				// Assert
 				result.RequireUnauthorized(t, tc.Token)

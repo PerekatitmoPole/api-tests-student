@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"api-tests-template/internal/managers/favorites"
 	base "api-tests-template/tests"
 	"api-tests-template/tests/fixtures"
-	"api-tests-template/tests/internal/manager"
 )
 
 const favoritesLimit = 50
@@ -31,12 +31,12 @@ func TestFavoritesRejectAddingBeyondLimit(t *testing.T) {
 	extraAd := fixtures.CreateAdvertisement(t, owner.Token)
 	cleanupFavorite(t, buyer.Token, extraAd.ID)
 
-	manager.AddFavoritesBulk(t, buyer.Token, adIDs).RequireStatus(t, http.StatusOK)
+	favorites.AddFavoritesBulk(t, buyer.Token, adIDs).RequireStatus(t, http.StatusOK)
 	require.Equal(t, favoritesLimit, *listFavorites(t, buyer.Token).Total, "лимит избранного не достигнут")
 
 	// Act
 	t.Logf("Шаг: пытаемся добавить объявление %s сверх лимита", extraAd.ID)
-	result := manager.AddFavorite(t, buyer.Token, extraAd.ID)
+	result := favorites.AddFavorite(t, buyer.Token, extraAd.ID)
 
 	// Assert
 	result.RequireError(t, http.StatusBadRequest, "(?i)limit|maximum")

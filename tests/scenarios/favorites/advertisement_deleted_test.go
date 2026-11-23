@@ -3,20 +3,14 @@ package favorites
 import (
 	"net/http"
 	"testing"
-
-	base "api-tests-template/tests"
-	"api-tests-template/tests/fixtures"
 )
 
 func TestDeletingAdvertisementRemovesItFromFavorites(t *testing.T) {
 	// Arrange
-	base.SetupSuite()
-	owner := fixtures.LoginOwner(t)
-	buyer := fixtures.LoginBuyer(t, owner)
-	ad := fixtures.CreateAdvertisement(t, owner.Token)
+	buyerToken, ad := setupFavoriteAdvertisement(t)
 
-	addFavoriteForSetup(t, buyer.Token, ad.ID)
-	requireFavoriteState(t, buyer.Token, ad, true)
+	addFavoriteForSetup(t, buyerToken, ad.ID)
+	requireFavoriteState(t, buyerToken, ad, true)
 
 	// Act
 	t.Logf("Шаг: владелец удаляет объявление %s", ad.ID)
@@ -24,5 +18,5 @@ func TestDeletingAdvertisementRemovesItFromFavorites(t *testing.T) {
 
 	// Assert
 	result.RequireStatus(t, http.StatusNoContent)
-	requireFavoriteState(t, buyer.Token, ad, false)
+	requireFavoriteState(t, buyerToken, ad, false)
 }

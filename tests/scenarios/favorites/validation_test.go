@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
+	"api-tests-template/internal/managers/favorites"
 	base "api-tests-template/tests"
 	"api-tests-template/tests/fixtures"
-	"api-tests-template/tests/internal/manager"
 )
 
 func TestFavoritesRejectInvalidAdvertisementID(t *testing.T) {
@@ -26,7 +26,7 @@ func TestFavoritesRejectInvalidAdvertisementID(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
 			t.Logf("Шаг: отправляем POST /favorites, вариант %s", tc.name)
-			result := manager.AddFavorite(t, user.Token, tc.id)
+			result := favorites.AddFavorite(t, user.Token, tc.id)
 
 			// Assert
 			result.RequireError(t, http.StatusBadRequest, tc.message)
